@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand -->
+    <color name="primary">#38BDF8</color>
+    <color name="on_primary">#0F172A</color>
+    <color name="primary_dark">#0369A1</color>
+
+    <!-- Backgrounds -->
+    <color name="background">#0F172A</color>
+    <color name="surface">#1E293B</color>
+    <color name="surface_variant">#334155</color>
+
+    <!-- Text -->
+    <color name="on_surface">#F0F9FF</color>
+    <color name="on_surface_muted">#94A3B8</color>
+
+    <!-- Overlay -->
+    <color name="overlay_bg">#E00F172A</color>
+    <color name="overlay_header">#F5141E2E</color>
+    <color name="overlay_border">#B438BDF8</color>
+    <color name="text_mask">#F20A1226</color>
+</resources>
