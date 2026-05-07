@@ -43,5 +43,8 @@ jobs:
 
       - name: Print APK details
         run: |
+          echo "============================================"
           echo "✅ APK built successfully!"
           ls -lh app/build/outputs/apk/debug/app-debug.apk
+          echo "============================================"
+          echo "Download from the Actions tab → Artifacts section"
