@@ -35,6 +35,7 @@
 
     </FrameLayout>
 
+    <!-- Permission banner -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/permissionBanner"
         android:layout_width="match_parent"
@@ -105,7 +106,19 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Service toggle: start/stop background floating overlay -->
+    <!-- Language settings button (bottom-center) -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:text="@string/btn_language_settings"
+        android:textColor="@color/on_primary"
+        app:backgroundTint="@color/surface_variant"
+        app:elevation="10dp" />
+
+    <!-- Service toggle (bottom-start) -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btnService"
         android:layout_width="wrap_content"
@@ -119,7 +132,7 @@
         app:iconTint="@color/on_primary"
         app:elevation="10dp" />
 
-    <!-- In-app translate FAB -->
+    <!-- Translate FAB (bottom-end) -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabTranslate"
         android:layout_width="wrap_content"
