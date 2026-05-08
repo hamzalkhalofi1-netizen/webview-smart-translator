@@ -1,40 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!--
-        Full Material Components theme — all required color attributes are declared
-        explicitly to prevent IllegalArgumentException on layout inflation.
-        Parent: DayNight.NoActionBar so no ActionBar is created (we use full-screen).
+        Baseline Material3 theme. Only colorPrimary is set explicitly.
+        All other attributes use Material3 defaults to avoid missing-attribute crashes.
     -->
-    <style name="Theme.WebViewTranslator" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-
-        <!-- ── Primary palette ──────────────────────────────────────────── -->
+    <style name="Theme.WebViewTranslator" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary_dark</item>
-        <item name="colorOnPrimary">@color/on_primary</item>
-
-        <!-- ── Secondary palette ────────────────────────────────────────── -->
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary_dark</item>
-        <item name="colorOnSecondary">@color/on_secondary</item>
-
-        <!-- ── Surface / background ─────────────────────────────────────── -->
-        <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/on_surface</item>
-        <item name="colorBackground">@color/background</item>
-        <item name="colorOnBackground">@color/on_surface</item>
-
-        <!-- ── Error ────────────────────────────────────────────────────── -->
-        <item name="colorError">@color/error</item>
-        <item name="colorOnError">@color/on_error</item>
-
-        <!-- ── Window ───────────────────────────────────────────────────── -->
-        <item name="android:windowBackground">@color/background</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:statusBarColor">@color/background</item>
-        <item name="android:navigationBarColor">@color/background</item>
-        <item name="android:windowLightStatusBar">false</item>
-
     </style>
-
 </resources>
