@@ -15,12 +15,33 @@
     <string name="capture_failed">فشل التقاط الشاشة</string>
     <string name="model_downloading">جارٍ تحميل نموذج الترجمة…</string>
 
-    <!-- Permission strings -->
+    <!-- Permission dialog (used in MainActivity.kt) -->
+    <string name="overlay_permission_title">إذن مطلوب: العرض فوق التطبيقات</string>
+    <string name="overlay_permission_message">يحتاج المترجم الذكي إلى إذن «العرض فوق التطبيقات» لعرض طبقة الترجمة أثناء تصفحك.\n\nاضغط «فتح الإعدادات»، ابحث عن WebView Translator، ثم فعّل المفتاح.</string>
+    <string name="overlay_permission_go_to_settings">فتح الإعدادات</string>
+    <string name="overlay_permission_skip">تخطّي</string>
+    <string name="overlay_permission_denied_warning">لم يُمنح الإذن — لن تعمل الطبقة العائمة.</string>
+
+    <!-- Permission banner (used in layout XML) -->
     <string name="perm_overlay_title">إذن مطلوب: العرض فوق التطبيقات</string>
-    <string name="perm_overlay_message">يحتاج المترجم الذكي إلى إذن «العرض فوق التطبيقات» لعرض طبقة الترجمة أثناء تصفحك.\n\nاضغط «فتح الإعدادات»، ابحث عن WebView Translator، ثم فعّل المفتاح.</string>
+    <string name="perm_overlay_message">يحتاج المترجم الذكي إلى إذن «العرض فوق التطبيقات» لعرض طبقة الترجمة أثناء تصفحك.</string>
     <string name="perm_banner_description">لعرض طبقة الترجمة، يلزم منح إذن «العرض فوق التطبيقات» من إعدادات الهاتف.</string>
     <string name="btn_open_settings">فتح الإعدادات لمنح الإذن</string>
     <string name="btn_skip">تخطي الآن</string>
     <string name="perm_granted">✓ تم منح الإذن — يمكنك الآن تشغيل المترجم</string>
     <string name="perm_skipped_hint">يمكنك منح الإذن لاحقاً من خلال الضغط على زر تشغيل المترجم</string>
+
+    <!-- Floating bubble -->
+    <string name="bubble_description">زر الترجمة العائم</string>
+
+    <!-- Foreground service notification -->
+    <string name="notif_channel_name">خدمة الترجمة</string>
+    <string name="notif_channel_description">الإشعار الدائم لخدمة الترجمة العائمة</string>
+    <string name="notif_title">WebView Translator يعمل</string>
+    <string name="notif_text">اضغط على الفقاعة العائمة لبدء الترجمة</string>
+    <string name="notif_action_stop">إيقاف الخدمة</string>
+
+    <!-- Service control buttons -->
+    <string name="btn_start_service">تشغيل الخدمة العائمة</string>
+    <string name="btn_stop_service">إيقاف الخدمة العائمة</string>
 </resources>
