@@ -3,7 +3,6 @@ package com.translator.webview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
-import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import kotlin.math.max
@@ -21,13 +20,11 @@ import kotlin.math.min
  *   3. Provide drag (header area) and resize (bottom-right corner handle).
  */
 @SuppressLint("ClickableViewAccessibility")
-class OverlayView @JvmOverloads constructor(
+class OverlayView(
     context: Context,
     private val translationManager: TranslationManager,
-    private val onSyncRequested: () -> Unit,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0
-) : View(context, attrs, defStyle) {
+    private val onSyncRequested: () -> Unit
+) : View(context) {
 
     // ── Geometry ─────────────────────────────────────────────────────────────
 
