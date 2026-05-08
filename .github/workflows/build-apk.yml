@@ -20,18 +20,31 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Grant Gradle wrapper permission
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Grant Gradle wrapper execute permission
         run: chmod +x gradlew
 
       - name: Build Debug APK
-        # حيدنا الـ env والتعقيدات باش نخليو GitHub يخدم بالقيم الافتراضية ديالو
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME }}
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: WebViewTranslator-debug
           path: app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
           retention-days: 14
-          
+
+      - name: Show APK info
+        run: |
+          echo "========================================"
+          echo "✅  APK built successfully!"
+          ls -lh app/build/outputs/apk/debug/app-debug.apk
+          echo "========================================"
+          echo "Download: Actions tab → run → Artifacts"
