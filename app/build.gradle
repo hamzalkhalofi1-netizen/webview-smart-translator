@@ -53,7 +53,6 @@ dependencies {
     implementation 'androidx.webkit:webkit:1.10.0'
 
     implementation 'com.google.mlkit:text-recognition:16.0.0'
-    implementation 'com.google.mlkit:text-recognition-arabic:16.0.0'
     implementation 'com.google.mlkit:translate:17.0.1'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
