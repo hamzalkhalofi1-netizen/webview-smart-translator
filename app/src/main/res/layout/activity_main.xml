@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <!-- Root container: WebView + translation overlay stacked -->
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <!-- Thin page-load progress bar at top of screen -->
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
@@ -28,10 +26,6 @@
             android:progressTint="@color/primary"
             android:visibility="gone" />
 
-        <!--
-            OverlayView is added here programmatically.
-            clickable/focusable false so touches pass through when hidden.
-        -->
         <FrameLayout
             android:id="@+id/overlayContainer"
             android:layout_width="match_parent"
@@ -41,10 +35,6 @@
 
     </FrameLayout>
 
-    <!--
-        Permission banner — shown only when SYSTEM_ALERT_WINDOW is not granted.
-        Uses android:tint (not app:tint) to avoid NPE on system drawables.
-    -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/permissionBanner"
         android:layout_width="match_parent"
@@ -52,7 +42,7 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="172dp"
         android:visibility="gone"
         app:cardBackgroundColor="@color/surface"
         app:cardCornerRadius="16dp"
@@ -66,7 +56,6 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Icon + title row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,10 +63,6 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="8dp">
 
-                <!--
-                    Using android:tint (not app:tint) to avoid
-                    NPE when tinting @android:drawable system resources.
-                -->
                 <ImageView
                     android:layout_width="26dp"
                     android:layout_height="26dp"
@@ -97,7 +82,6 @@
 
             </LinearLayout>
 
-            <!-- Description -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +91,6 @@
                 android:lineSpacingMultiplier="1.4"
                 android:layout_marginBottom="14dp" />
 
-            <!-- Grant permission button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGrantPermission"
                 style="@style/Widget.MaterialComponents.Button"
@@ -122,7 +105,21 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- FAB: "تشغيل المترجم" ↔ "إغلاق المترجم" -->
+    <!-- Service toggle: start/stop background floating overlay -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="24dp"
+        android:text="@string/btn_start_service"
+        android:textColor="@color/on_primary"
+        app:backgroundTint="@color/secondary_dark"
+        app:icon="@drawable/ic_translate"
+        app:iconTint="@color/on_primary"
+        app:elevation="10dp" />
+
+    <!-- In-app translate FAB -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabTranslate"
         android:layout_width="wrap_content"
