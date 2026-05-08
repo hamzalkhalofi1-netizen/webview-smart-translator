@@ -21,22 +21,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            applicationIdSuffix ".debug"
             debuggable true
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     buildFeatures {
         viewBinding true
+    }
+
+    packagingOptions {
+        resources {
+            excludes += ['/META-INF/{AL2.0,LGPL2.1}']
+        }
     }
 }
 
@@ -47,12 +52,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.webkit:webkit:1.10.0'
 
-    // ML Kit — On-device Text Recognition (Latin + Arabic script)
     implementation 'com.google.mlkit:text-recognition:16.0.0'
-
-    // ML Kit — On-device Translation (downloads language models)
+    implementation 'com.google.mlkit:text-recognition-arabic:16.0.0'
     implementation 'com.google.mlkit:translate:17.0.1'
 
-    // Coroutines for async work
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 }
