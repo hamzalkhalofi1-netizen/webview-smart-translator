@@ -46,9 +46,7 @@ class MainActivity : AppCompatActivity() {
                 translationService = (binder as TranslationService.LocalBinder).getService()
                 isServiceBound = true
                 updateServiceButton()
-            } catch (e: Exception) {
-                Log.e(TAG, "Service connection error", e)
-            }
+            } catch (e: Exception) { Log.e(TAG, "Service bind error", e) }
         }
         override fun onServiceDisconnected(name: ComponentName?) {
             translationService = null
@@ -65,44 +63,36 @@ class MainActivity : AppCompatActivity() {
     // ── onCreate ──────────────────────────────────────────────────────────────
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Install crash logger first — before anything else
         installGlobalExceptionHandler()
         super.onCreate(savedInstanceState)
-
         try {
             binding = ActivityMainBinding.inflate(layoutInflater)
             setContentView(binding.root)
             NotificationHelper.createChannel(this)
             checkOverlayPermissionThenInit()
         } catch (e: Exception) {
-            Log.e(TAG, "FATAL: onCreate crashed", e)
+            Log.e(TAG, "FATAL onCreate", e)
             showFatalError(e)
         }
     }
 
     private fun showFatalError(e: Exception) {
         try {
-            // Last-resort: show an alert so the user can report the exact message
             AlertDialog.Builder(this)
                 .setTitle("خطأ في التشغيل")
-                .setMessage("حدث خطأ غير متوقع:\n${e.javaClass.simpleName}: ${e.message}\n\nيرجى إبلاغ المطور بهذه الرسالة.")
+                .setMessage("${e.javaClass.simpleName}: ${e.message}\n\nيرجى إبلاغ المطور.")
                 .setPositiveButton("حسناً", null)
                 .show()
-        } catch (ignored: Exception) {
-            // If even AlertDialog fails, Toast as absolute last resort
-            try {
-                Toast.makeText(this, "Fatal: ${e.message}", Toast.LENGTH_LONG).show()
-            } catch (_: Exception) {}
+        } catch (_: Exception) {
+            Toast.makeText(this, "Fatal: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
-    // ── Crash logger ──────────────────────────────────────────────────────────
-
     private fun installGlobalExceptionHandler() {
-        val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
-            Log.e(TAG, "UNCAUGHT on '${thread.name}': ${throwable.javaClass.name}: ${throwable.message}", throwable)
-            defaultHandler?.uncaughtException(thread, throwable)
+        val default = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { t, ex ->
+            Log.e(TAG, "UNCAUGHT on '${t.name}': ${ex.javaClass.name}: ${ex.message}", ex)
+            default?.uncaughtException(t, ex)
         }
     }
 
@@ -129,11 +119,10 @@ class MainActivity : AppCompatActivity() {
 
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        @Suppress("DEPRECATION")
-        super.onActivityResult(requestCode, resultCode, data)
+        @Suppress("DEPRECATION") super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_OVERLAY_PERMISSION) {
-            val granted = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)
-            if (!granted) Toast.makeText(this, getString(R.string.overlay_permission_denied_warning), Toast.LENGTH_LONG).show()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this))
+                Toast.makeText(this, getString(R.string.overlay_permission_denied_warning), Toast.LENGTH_LONG).show()
             initApp()
         }
     }
@@ -145,9 +134,10 @@ class MainActivity : AppCompatActivity() {
             setupWebView()
             setupFab()
             setupServiceButton()
+            setupLanguageButton()
             initTranslationManagerAsync()
         } catch (e: Exception) {
-            Log.e(TAG, "initApp failed", e)
+            Log.e(TAG, "initApp error", e)
             showFatalError(e)
         }
     }
@@ -156,20 +146,18 @@ class MainActivity : AppCompatActivity() {
         activityScope.launch(Dispatchers.IO) {
             try {
                 val mgr = TranslationManager(this@MainActivity)
+                mgr.onModelStatusChanged = { ready, msg ->
+                    if (!ready) Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+                }
                 launch(Dispatchers.Main) {
-                    try {
-                        translationManager = mgr
-                        setupOverlay()
-                        Log.d(TAG, "TranslationManager ready")
-                    } catch (e: Exception) {
-                        Log.e(TAG, "setupOverlay failed", e)
-                        Toast.makeText(this@MainActivity, "خطأ في الإعداد: ${e.message}", Toast.LENGTH_LONG).show()
-                    }
+                    translationManager = mgr
+                    setupOverlay()
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "TranslationManager init failed", e)
                 launch(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "${getString(R.string.model_downloading)}\n${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity,
+                        "${getString(R.string.model_downloading)}: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -199,7 +187,7 @@ class MainActivity : AppCompatActivity() {
                     try {
                         binding.progressBar.visibility = View.GONE
                         if (isOverlayActive) binding.root.postDelayed({ captureAndTranslate(silent = true) }, 500)
-                        if (isServiceBound) binding.root.postDelayed({ captureAndSendToService() }, 600)
+                        if (isServiceBound)  binding.root.postDelayed({ captureAndSendToService() }, 600)
                     } catch (e: Exception) { Log.w(TAG, "onPageFinished error", e) }
                 }
             }
@@ -221,9 +209,7 @@ class MainActivity : AppCompatActivity() {
             ov.visibility = View.GONE
             binding.overlayContainer.addView(ov)
             overlayView = ov
-        } catch (e: Exception) {
-            Log.e(TAG, "setupOverlay error", e)
-        }
+        } catch (e: Exception) { Log.e(TAG, "setupOverlay error", e) }
     }
 
     // ── FAB ───────────────────────────────────────────────────────────────────
@@ -236,10 +222,7 @@ class MainActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 toggleOverlay()
-            } catch (e: Exception) {
-                Log.e(TAG, "FAB click error", e)
-                Toast.makeText(this, "خطأ: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+            } catch (e: Exception) { Toast.makeText(this, "خطأ: ${e.message}", Toast.LENGTH_SHORT).show() }
         }
     }
 
@@ -252,18 +235,52 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // ── Language settings ─────────────────────────────────────────────────────
+
+    private fun setupLanguageButton() {
+        // The language button is inside the OverlayView header.
+        // The activity also has a standalone settings button (btnLanguage)
+        // that shows a dialog for language selection before the overlay is open.
+        try {
+            binding.btnLanguage.setOnClickListener { showLanguageDialog() }
+        } catch (e: Exception) { Log.w(TAG, "btnLanguage not found in layout", e) }
+    }
+
+    fun showLanguageDialog() {
+        val mgr = translationManager ?: run {
+            Toast.makeText(this, getString(R.string.model_downloading), Toast.LENGTH_SHORT).show()
+            return
+        }
+        val langs = mgr.supportedLanguages
+        val currentCode = mgr.getTargetLanguage().code
+        val currentIdx  = langs.indexOfFirst { it.code == currentCode }.coerceAtLeast(0)
+        val labels = langs.map { it.displayName }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.language_picker_title))
+            .setSingleChoiceItems(labels, currentIdx) { dialog, which ->
+                val selected = langs[which]
+                mgr.setTargetLanguage(selected.code)
+                overlayView?.setTargetLanguage(selected.code)
+                Toast.makeText(this,
+                    "${getString(R.string.language_changed_to)} ${selected.displayName}",
+                    Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+
     // ── Service button ────────────────────────────────────────────────────────
 
     private fun setupServiceButton() {
-        binding.btnService.setOnClickListener {
-            try {
-                if (isServiceBound) stopTranslationService() else startTranslationService()
-            } catch (e: Exception) {
-                Log.e(TAG, "Service button error", e)
-                Toast.makeText(this, "خطأ في الخدمة: ${e.message}", Toast.LENGTH_SHORT).show()
+        try {
+            binding.btnService.setOnClickListener {
+                try { if (isServiceBound) stopTranslationService() else startTranslationService() }
+                catch (e: Exception) { Toast.makeText(this, "خطأ في الخدمة: ${e.message}", Toast.LENGTH_SHORT).show() }
             }
-        }
-        updateServiceButton()
+            updateServiceButton()
+        } catch (e: Exception) { Log.w(TAG, "btnService not in layout", e) }
     }
 
     private fun startTranslationService() {
@@ -277,14 +294,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun stopTranslationService() {
-        if (isServiceBound) { try { unbindService(serviceConnection) } catch (_: Exception) {} ; isServiceBound = false; translationService = null }
+        if (isServiceBound) {
+            try { unbindService(serviceConnection) } catch (_: Exception) {}
+            isServiceBound = false; translationService = null
+        }
         stopService(Intent(this, TranslationService::class.java))
         updateServiceButton()
     }
 
     private fun updateServiceButton() {
         try {
-            binding.btnService.text = if (isServiceBound) getString(R.string.btn_stop_service) else getString(R.string.btn_start_service)
+            binding.btnService.text =
+                if (isServiceBound) getString(R.string.btn_stop_service)
+                else getString(R.string.btn_start_service)
         } catch (_: Exception) {}
     }
 
@@ -306,42 +328,38 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this, getString(R.string.capture_failed), Toast.LENGTH_SHORT).show()
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "captureAndTranslate callback error", e)
-                }
+                } catch (e: Exception) { Log.e(TAG, "translate callback error", e) }
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "captureAndTranslate error", e)
-        }
+        } catch (e: Exception) { Log.e(TAG, "captureAndTranslate error", e) }
     }
 
     private fun captureAndSendToService() {
-        try { captureWebView { bitmap -> if (bitmap != null) translationService?.updateBitmap(bitmap) } }
+        try { captureWebView { bmp -> if (bmp != null) translationService?.updateBitmap(bmp) } }
         catch (e: Exception) { Log.w(TAG, "captureAndSendToService error", e) }
     }
 
     fun captureWebView(callback: (Bitmap?) -> Unit) {
         try {
-            val webView = binding.webView
-            if (webView.width == 0 || webView.height == 0) { callback(null); return }
-            val bitmap = Bitmap.createBitmap(webView.width, webView.height, Bitmap.Config.ARGB_8888)
+            val wv = binding.webView
+            if (wv.width == 0 || wv.height == 0) { callback(null); return }
+            val bmp = Bitmap.createBitmap(wv.width, wv.height, Bitmap.Config.ARGB_8888)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val loc = IntArray(2); webView.getLocationInWindow(loc)
+                val loc = IntArray(2); wv.getLocationInWindow(loc)
                 try {
                     PixelCopy.request(window,
-                        android.graphics.Rect(loc[0], loc[1], loc[0] + webView.width, loc[1] + webView.height),
-                        bitmap,
-                        { result -> if (result == PixelCopy.SUCCESS) callback(bitmap) else fallbackCapture(webView, callback) },
+                        android.graphics.Rect(loc[0], loc[1], loc[0] + wv.width, loc[1] + wv.height),
+                        bmp,
+                        { r -> if (r == PixelCopy.SUCCESS) callback(bmp) else fallbackCapture(wv, callback) },
                         Handler(Looper.getMainLooper()))
-                } catch (e: Exception) { fallbackCapture(webView, callback) }
-            } else { fallbackCapture(webView, callback) }
+                } catch (_: Exception) { fallbackCapture(wv, callback) }
+            } else { fallbackCapture(wv, callback) }
         } catch (e: Exception) { Log.e(TAG, "captureWebView error", e); callback(null) }
     }
 
-    private fun fallbackCapture(webView: WebView, callback: (Bitmap?) -> Unit) {
+    private fun fallbackCapture(wv: WebView, callback: (Bitmap?) -> Unit) {
         try {
-            val bmp = Bitmap.createBitmap(webView.width, webView.height, Bitmap.Config.ARGB_8888)
-            webView.draw(Canvas(bmp)); callback(bmp)
+            val bmp = Bitmap.createBitmap(wv.width, wv.height, Bitmap.Config.ARGB_8888)
+            wv.draw(Canvas(bmp)); callback(bmp)
         } catch (e: Exception) { Log.e(TAG, "fallbackCapture error", e); callback(null) }
     }
 
@@ -350,7 +368,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            if (!isServiceBound) bindService(Intent(this, TranslationService::class.java), serviceConnection, Context.BIND_AUTO_CREATE)
+            if (!isServiceBound)
+                bindService(Intent(this, TranslationService::class.java), serviceConnection, Context.BIND_AUTO_CREATE)
         } catch (_: Exception) {}
     }
 
@@ -361,7 +380,8 @@ class MainActivity : AppCompatActivity() {
 
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onBackPressed() {
-        if (binding.webView.canGoBack()) binding.webView.goBack() else @Suppress("DEPRECATION") super.onBackPressed()
+        if (binding.webView.canGoBack()) binding.webView.goBack()
+        else @Suppress("DEPRECATION") super.onBackPressed()
     }
 
     override fun onDestroy() {
