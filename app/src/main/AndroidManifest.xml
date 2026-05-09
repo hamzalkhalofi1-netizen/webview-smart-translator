@@ -17,18 +17,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YomuAI"
         android:hardwareAccelerated="true"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config">
 
+        <!-- ── Splash (launcher) ──────────────────────────────────────── -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.YomuAI.Splash"
+            android:configChanges="locale|layoutDirection"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- ── Onboarding ─────────────────────────────────────────────── -->
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="false"
+            android:configChanges="locale|layoutDirection"
+            android:screenOrientation="portrait" />
+
+        <!-- ── Main ───────────────────────────────────────────────────── -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden|locale|layoutDirection"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".DownloaderActivity"

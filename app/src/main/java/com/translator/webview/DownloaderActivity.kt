@@ -1,24 +1,26 @@
 package com.translator.webview
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.URLUtil
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.translator.webview.databinding.ActivityDownloaderBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 
 class DownloaderActivity : AppCompatActivity() {
 
@@ -30,15 +32,21 @@ class DownloaderActivity : AppCompatActivity() {
 
     private var currentMetadata: MangaMetadata? = null
     private var downloadResults = mutableListOf<DownloadResult>()
-
     private lateinit var chapterAdapter: ChapterAdapter
+
+    private val prefs by lazy { getSharedPreferences("yomuai_prefs", Context.MODE_PRIVATE) }
 
     companion object {
         private const val TAG = "DownloaderActivity"
+        private const val KEY_DOMAINS = "saved_domains"
         const val EXTRA_CHAPTER_CONTENT = "extra_chapter_content"
         const val EXTRA_CHAPTER_IMAGES  = "extra_chapter_images"
         const val EXTRA_CHAPTER_TITLE   = "extra_chapter_title"
         const val EXTRA_IS_NOVEL        = "extra_is_novel"
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(LocaleManager.wrap(base))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +59,7 @@ class DownloaderActivity : AppCompatActivity() {
         setupToolbar()
         setupRecyclerView()
         setupButtons()
+        loadSavedDomains()
     }
 
     private fun setupToolbar() {
@@ -60,9 +69,7 @@ class DownloaderActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        chapterAdapter = ChapterAdapter { chapter ->
-            openChapterInReader(chapter)
-        }
+        chapterAdapter = ChapterAdapter { chapter -> openChapterInReader(chapter) }
         binding.rvChapters.apply {
             layoutManager = LinearLayoutManager(this@DownloaderActivity)
             adapter = chapterAdapter
@@ -90,6 +97,79 @@ class DownloaderActivity : AppCompatActivity() {
             if (result != null) openReaderWithResult(result)
             else Toast.makeText(this, "Download chapters first", Toast.LENGTH_SHORT).show()
         }
+
+        // Domain importer — Add button
+        binding.btnAddDomain.setOnClickListener {
+            val raw = binding.etDomain.text.toString().trim()
+                .removePrefix("https://").removePrefix("http://").trimEnd('/')
+            if (raw.isBlank()) return@setOnClickListener
+            saveDomain(raw)
+            binding.etDomain.setText("")
+        }
+    }
+
+    // ── Domain Importer ───────────────────────────────────────────────────────
+
+    private fun getSavedDomains(): MutableList<String> {
+        val stored = prefs.getString(KEY_DOMAINS, "") ?: ""
+        return if (stored.isBlank()) mutableListOf()
+        else stored.split(",").filter { it.isNotBlank() }.toMutableList()
+    }
+
+    private fun saveDomain(domain: String) {
+        val list = getSavedDomains()
+        if (!list.contains(domain)) {
+            list.add(0, domain)
+            prefs.edit().putString(KEY_DOMAINS, list.joinToString(",")).apply()
+            loadSavedDomains()
+        }
+    }
+
+    private fun removeDomain(domain: String) {
+        val list = getSavedDomains()
+        list.remove(domain)
+        prefs.edit().putString(KEY_DOMAINS, list.joinToString(",")).apply()
+        loadSavedDomains()
+    }
+
+    private fun loadSavedDomains() {
+        binding.chipGroupDomains.removeAllViews()
+        val domains = getSavedDomains()
+
+        if (domains.isEmpty()) {
+            binding.cardDomainImporter.visibility = View.GONE
+            return
+        }
+
+        binding.cardDomainImporter.visibility = View.VISIBLE
+        domains.forEach { domain ->
+            val chip = Chip(this).apply {
+                text = domain
+                isCloseIconVisible = true
+                isClickable = true
+                isFocusable = true
+                chipBackgroundColor = android.content.res.ColorStateList.valueOf(
+                    android.graphics.Color.parseColor("#1A38BDF8")
+                )
+                setTextColor(android.graphics.Color.parseColor("#E2E8F0"))
+                chipStrokeColor = android.content.res.ColorStateList.valueOf(
+                    android.graphics.Color.parseColor("#38BDF8")
+                )
+                chipStrokeWidth = resources.getDimension(R.dimen.chip_stroke_width)
+                closeIconTint = android.content.res.ColorStateList.valueOf(
+                    android.graphics.Color.parseColor("#94A3B8")
+                )
+
+                setOnClickListener {
+                    binding.etSiteUrl.setText("https://$domain/")
+                    binding.etSiteUrl.setSelection(binding.etSiteUrl.text?.length ?: 0)
+                }
+                setOnCloseIconClickListener {
+                    removeDomain(domain)
+                }
+            }
+            binding.chipGroupDomains.addView(chip)
+        }
     }
 
     // ── Fetch ─────────────────────────────────────────────────────────────────
@@ -101,36 +181,31 @@ class DownloaderActivity : AppCompatActivity() {
         binding.cardGeminiBadge.visibility = View.GONE
         chapterAdapter.submitList(emptyList())
 
+        // Auto-save the domain
+        try {
+            val host = android.net.Uri.parse(url).host
+            if (!host.isNullOrBlank()) saveDomain(host)
+        } catch (_: Exception) {}
+
         scope.launch {
             try {
-                // 1. Scrape metadata
                 val meta = withContext(Dispatchers.IO) {
                     scraper.fetchMetadata(url) { progress, msg ->
-                        launch(Dispatchers.Main) {
-                            updateProgress(progress / 2, msg)
-                        }
+                        launch(Dispatchers.Main) { updateProgress(progress / 2, msg) }
                     }
                 }
 
                 updateProgress(50, getString(R.string.translating_metadata))
 
-                // 2. Translate metadata with Gemini AI
+                val targetLang = resolveTargetLanguage()
                 val (tTitle, tGenre, tDesc) = withContext(Dispatchers.IO) {
-                    gemini.translateMetadata(
-                        meta.title, meta.genre, meta.description,
-                        targetLanguage = "Arabic"
-                    )
+                    gemini.translateMetadata(meta.title, meta.genre, meta.description,
+                        targetLanguage = targetLang)
                 }
 
                 updateProgress(100, "Done!")
 
-                // 3. Update UI
-                currentMetadata = meta.copy(
-                    title = tTitle,
-                    genre = tGenre,
-                    description = tDesc
-                )
-
+                currentMetadata = meta.copy(title = tTitle, genre = tGenre, description = tDesc)
                 showMetadata(currentMetadata!!)
                 showProgress(false)
                 binding.cardGeminiBadge.visibility = View.VISIBLE
@@ -138,9 +213,21 @@ class DownloaderActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e(TAG, "Fetch failed", e)
                 showProgress(false)
-                Toast.makeText(this@DownloaderActivity,
-                    "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@DownloaderActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    private fun resolveTargetLanguage(): String {
+        val langCode = prefs.getString("translate_lang", "ar") ?: "ar"
+        return when (langCode) {
+            "ar" -> "Arabic"
+            "fr" -> "French"
+            "es" -> "Spanish"
+            "ja" -> "Japanese"
+            "tr" -> "Turkish"
+            "id" -> "Indonesian"
+            else -> "English"
         }
     }
 
@@ -148,7 +235,7 @@ class DownloaderActivity : AppCompatActivity() {
         binding.tvTitle.text       = meta.title
         binding.tvGenre.text       = meta.genre
         binding.tvDescription.text = meta.description
-        binding.chipChapterCount.text = "${meta.chapters.size} chapters found"
+        binding.chipChapterCount.text = "${meta.chapters.size} ${getString(R.string.label_chapters)}"
         binding.cardMetadata.visibility = View.VISIBLE
         binding.layoutActions.visibility = View.VISIBLE
 
@@ -171,30 +258,28 @@ class DownloaderActivity : AppCompatActivity() {
         val total = meta.chapters.size
         showProgress(true, getString(R.string.downloading_chapters), 0)
         binding.layoutActions.visibility = View.GONE
+        val targetLang = resolveTargetLanguage()
 
         scope.launch {
             try {
                 meta.chapters.forEachIndexed { index, chapter ->
                     val chapProgress = (index.toFloat() / total * 100).toInt()
-                    updateProgress(chapProgress,
-                        getString(R.string.chapter_progress, index + 1, total))
+                    updateProgress(chapProgress, getString(R.string.chapter_progress, index + 1, total))
 
                     val result = withContext(Dispatchers.IO) {
                         scraper.downloadChapter(chapter) { p ->
                             launch(Dispatchers.Main) {
-                                val overall = chapProgress + (p / total)
-                                updateProgress(overall.coerceIn(0, 99), "")
+                                updateProgress((chapProgress + p / total).coerceIn(0, 99), "")
                             }
                         }
                     }
 
-                    // Translate novel content if needed
                     if (result.isNovel && result.textContent.isNotBlank()) {
-                        updateProgress(chapProgress, "Gemini AI translating chapter ${index + 1}…")
-                        val translatedContent = withContext(Dispatchers.IO) {
-                            gemini.translateChapterContent(result.textContent, "Arabic")
+                        updateProgress(chapProgress, "${getString(R.string.gemini_translating)} ${index + 1}…")
+                        val translated = withContext(Dispatchers.IO) {
+                            gemini.translateChapterContent(result.textContent, targetLang)
                         }
-                        downloadResults.add(result.copy(textContent = translatedContent))
+                        downloadResults.add(result.copy(textContent = translated))
                     } else {
                         downloadResults.add(result)
                     }
@@ -223,16 +308,12 @@ class DownloaderActivity : AppCompatActivity() {
         if (result != null) {
             openReaderWithResult(result)
         } else {
-            // Download on demand
             scope.launch {
                 try {
-                    val r = withContext(Dispatchers.IO) {
-                        scraper.downloadChapter(chapter) {}
-                    }
+                    val r = withContext(Dispatchers.IO) { scraper.downloadChapter(chapter) {} }
                     openReaderWithResult(r)
                 } catch (e: Exception) {
-                    Toast.makeText(this@DownloaderActivity,
-                        "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DownloaderActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -243,15 +324,13 @@ class DownloaderActivity : AppCompatActivity() {
             putExtra(EXTRA_CHAPTER_TITLE, result.chapterInfo.title)
             putExtra(EXTRA_IS_NOVEL, result.isNovel)
             putExtra(EXTRA_CHAPTER_CONTENT, result.textContent)
-            if (result.imageUrls.isNotEmpty()) {
-                putStringArrayListExtra(EXTRA_CHAPTER_IMAGES,
-                    ArrayList(result.imageUrls.take(50)))
-            }
+            if (result.imageUrls.isNotEmpty())
+                putStringArrayListExtra(EXTRA_CHAPTER_IMAGES, ArrayList(result.imageUrls.take(50)))
         }
         startActivity(intent)
     }
 
-    // ── Progress helpers ──────────────────────────────────────────────────────
+    // ── Progress ──────────────────────────────────────────────────────────────
 
     private fun showProgress(visible: Boolean, message: String = "", progress: Int = 0) {
         binding.layoutProgress.visibility = if (visible) View.VISIBLE else View.GONE
@@ -270,7 +349,7 @@ class DownloaderActivity : AppCompatActivity() {
         }
     }
 
-    // ── Chapter RecyclerView Adapter ──────────────────────────────────────────
+    // ── Chapter Adapter ───────────────────────────────────────────────────────
 
     inner class ChapterAdapter(
         private val onClick: (ChapterInfo) -> Unit
@@ -301,19 +380,19 @@ class DownloaderActivity : AppCompatActivity() {
             holder.tvTitle.text = chapter.title
             val isDownloaded = downloaded.contains(chapter.number)
             holder.ivStatus.setImageResource(R.drawable.ic_download)
-            val tintColor = if (isDownloaded)
+            val tint = if (isDownloaded)
                 android.graphics.Color.parseColor("#4CAF50")
             else
                 android.graphics.Color.parseColor("#38BDF8")
-            holder.ivStatus.setColorFilter(tintColor)
+            holder.ivStatus.setColorFilter(tint)
             holder.itemView.setOnClickListener { onClick(chapter) }
         }
 
         override fun getItemCount() = items.size
 
         inner class VH(view: View) : RecyclerView.ViewHolder(view) {
-            val tvNum: TextView   = view.findViewById(R.id.tvChapterNum)
-            val tvTitle: TextView = view.findViewById(R.id.tvChapterTitle)
+            val tvNum: TextView     = view.findViewById(R.id.tvChapterNum)
+            val tvTitle: TextView   = view.findViewById(R.id.tvChapterTitle)
             val ivStatus: ImageView = view.findViewById(R.id.ivDownloadStatus)
         }
     }

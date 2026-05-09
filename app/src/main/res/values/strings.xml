@@ -11,13 +11,43 @@
     <string name="menu_downloader">Manga / Novel Downloader</string>
     <string name="menu_reader">Reader</string>
     <string name="menu_about">About YomuAI</string>
+    <string name="menu_settings">Settings</string>
+
+    <!-- Splash -->
+    <string name="splash_no_internet_title">No Internet Connection</string>
+    <string name="splash_no_internet_msg">Please check your Wi-Fi or mobile data connection and try again.</string>
+    <string name="btn_retry">Retry</string>
+
+    <!-- Onboarding -->
+    <string name="onboard_step1_title">Who Are You?</string>
+    <string name="onboard_step1_sub">Tell us a bit about yourself</string>
+    <string name="onboard_male">Male</string>
+    <string name="onboard_female">Female</string>
+    <string name="onboard_step2_title">Where Are You From?</string>
+    <string name="onboard_step2_sub">Select your country</string>
+    <string name="onboard_step3_title">How Old Are You?</string>
+    <string name="onboard_step3_sub">Helps us recommend the right content</string>
+    <string name="onboard_step4_title">What Do You Read?</string>
+    <string name="onboard_step4_sub">Select all that apply</string>
+    <string name="onboard_intent_manga">Manga</string>
+    <string name="onboard_intent_comics">Comics</string>
+    <string name="onboard_intent_novels">Novels</string>
+    <string name="onboard_intent_translation">Translation</string>
+    <string name="onboard_step5_title">Language Preferences</string>
+    <string name="onboard_app_lang_label">App Language</string>
+    <string name="onboard_translate_lang_label">Translation Language</string>
+    <string name="onboard_btn_next">Next</string>
+    <string name="onboard_btn_back">Back</string>
+    <string name="onboard_btn_skip">Skip</string>
+    <string name="onboard_btn_finish">Get Started</string>
+    <string name="onboard_step">Step %1$d of %2$d</string>
 
     <!-- FAB labels -->
     <string name="fab_translate">Translate</string>
     <string name="fab_close">Close Translator</string>
     <string name="btn_start_translator">Start Translator</string>
 
-    <!-- Overlay content -->
+    <!-- Overlay -->
     <string name="overlay_title">Translation Layer</string>
     <string name="sync_button">⟳ Refresh</string>
     <string name="translating">Translating…</string>
@@ -32,13 +62,11 @@
     <string name="btn_language_settings">🌐 Language</string>
 
     <!-- Permission dialog -->
-    <string name="overlay_permission_title">Permission Required: Display Over Apps</string>
+    <string name="overlay_permission_title">Permission Required</string>
     <string name="overlay_permission_message">YomuAI needs the \"Display Over Apps\" permission to show the translation overlay while browsing.\n\nTap \"Open Settings\", find YomuAI, then enable the toggle.</string>
     <string name="overlay_permission_go_to_settings">Open Settings</string>
     <string name="overlay_permission_skip">Skip</string>
     <string name="overlay_permission_denied_warning">Permission not granted — the floating overlay won\'t work.</string>
-
-    <!-- Permission banner -->
     <string name="perm_overlay_title">Permission Required: Display Over Apps</string>
     <string name="perm_overlay_message">YomuAI needs the \"Display Over Apps\" permission.</string>
     <string name="perm_banner_description">To show the translation overlay, grant the \"Display Over Apps\" permission in your phone settings.</string>
@@ -46,24 +74,20 @@
     <string name="btn_skip">Skip for Now</string>
     <string name="perm_granted">✓ Permission granted — you can now start the translator</string>
     <string name="perm_skipped_hint">You can grant permission later by tapping the Start Translator button</string>
-
-    <!-- Floating bubble -->
     <string name="bubble_description">Floating translation button</string>
 
-    <!-- Foreground service notification -->
+    <!-- Notification -->
     <string name="notif_channel_name">YomuAI Translation Service</string>
     <string name="notif_channel_description">Persistent notification for YomuAI translation overlay service</string>
     <string name="notif_title">YomuAI is running</string>
     <string name="notif_text">Tap the floating bubble to start translating</string>
     <string name="notif_action_stop">Stop Service</string>
-
-    <!-- Service control -->
     <string name="btn_start_service">Start Floating Service</string>
     <string name="btn_stop_service">Stop Floating Service</string>
 
     <!-- Downloader -->
     <string name="downloader_title">Manga / Novel Downloader</string>
-    <string name="hint_site_url">Enter site URL (e.g. https://mangasite.com/manga/title)</string>
+    <string name="hint_site_url">Paste a manga/novel page URL…</string>
     <string name="btn_fetch_site">Fetch Site</string>
     <string name="btn_download_all">Download All Chapters</string>
     <string name="btn_open_reader">Open in Reader</string>
@@ -80,23 +104,51 @@
     <string name="chapter_progress">Chapter %1$d of %2$d</string>
     <string name="gemini_translating">Gemini AI translating…</string>
     <string name="ai_translated_badge">✦ AI Translated</string>
+    <string name="domain_saved_title">Saved Domains</string>
+    <string name="hint_domain">Domain (e.g. mangalek.com)</string>
+    <string name="btn_add_domain">Add</string>
 
     <!-- Reader -->
     <string name="reader_title">Reader</string>
     <string name="no_content">No content to display</string>
     <string name="loading_chapter">Loading chapter…</string>
+    <string name="translating_chapter">Translating chapter…</string>
 
     <!-- About -->
     <string name="about_title">About YomuAI</string>
+    <string name="app_version">Version 2.0</string>
     <string name="about_version">Version 2.0</string>
     <string name="about_tagline">AI-powered Manga &amp; Novel Reader</string>
     <string name="about_description">YomuAI brings intelligent, context-aware translation to your favourite manga and novel reading experience — powered by Google Gemini AI and ML Kit.</string>
     <string name="about_contact">Contact &amp; Support</string>
     <string name="about_email">yomuai.app@gmail.com</string>
-    <string name="about_youtube">YouTube Channel</string>
+    <string name="about_instagram">Instagram</string>
+    <string name="about_youtube">YouTube</string>
+    <string name="about_facebook">Facebook</string>
     <string name="about_twitter">Twitter / X</string>
     <string name="about_discord">Discord Community</string>
     <string name="about_github">GitHub</string>
-    <string name="about_copyright">© 2024 YomuAI. All rights reserved.</string>
+    <string name="about_copyright">© 2025 YomuAI. All rights reserved.</string>
     <string name="open_link">Open link</string>
+    <string name="setting_language">App Language</string>
+    <string name="setting_language_en">English</string>
+    <string name="setting_language_ar">Arabic (العربية)</string>
+
+    <!-- Countries array used in onboarding -->
+    <string-array name="countries">
+        <item>Algeria</item><item>Argentina</item><item>Australia</item>
+        <item>Bahrain</item><item>Brazil</item><item>Canada</item>
+        <item>China</item><item>Egypt</item><item>France</item>
+        <item>Germany</item><item>India</item><item>Indonesia</item>
+        <item>Iraq</item><item>Japan</item><item>Jordan</item>
+        <item>Kuwait</item><item>Lebanon</item><item>Libya</item>
+        <item>Malaysia</item><item>Mexico</item><item>Morocco</item>
+        <item>Netherlands</item><item>Nigeria</item><item>Oman</item>
+        <item>Pakistan</item><item>Palestine</item><item>Philippines</item>
+        <item>Qatar</item><item>Russia</item><item>Saudi Arabia</item>
+        <item>South Korea</item><item>Spain</item><item>Sudan</item>
+        <item>Syria</item><item>Thailand</item><item>Tunisia</item>
+        <item>Turkey</item><item>UAE</item><item>United Kingdom</item>
+        <item>United States</item><item>Yemen</item><item>Other</item>
+    </string-array>
 </resources>

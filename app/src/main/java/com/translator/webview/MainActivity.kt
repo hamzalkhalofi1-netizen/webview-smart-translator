@@ -64,6 +64,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         private const val REQUEST_OVERLAY_PERMISSION = 1001
     }
 
+    // ── Locale ────────────────────────────────────────────────────────────────
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(LocaleManager.wrap(base))
+    }
+
     // ── onCreate ──────────────────────────────────────────────────────────────
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +87,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    // ── Toolbar + Drawer ──────────────────────────────────────────────────────
+    // ── Toolbar + Floating Drawer ─────────────────────────────────────────────
 
     private fun setupToolbarAndDrawer() {
         setSupportActionBar(binding.toolbar)
@@ -95,6 +101,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         toggle.drawerArrowDrawable.color = getColor(R.color.primary)
 
+        // Dark semi-transparent scrim for the floating drawer effect
+        binding.drawerLayout.setScrimColor(0xCC000000.toInt())
+
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.setCheckedItem(R.id.nav_home)
     }
@@ -102,10 +111,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return when (item.itemId) {
-            R.id.nav_home -> {
-                // Already home — do nothing
-                true
-            }
+            R.id.nav_home -> true
             R.id.nav_downloader -> {
                 startActivity(Intent(this, DownloaderActivity::class.java))
                 true
@@ -116,6 +122,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_about -> {
                 startActivity(Intent(this, AboutActivity::class.java))
+                true
+            }
+            R.id.nav_settings -> {
+                showAppLanguageDialog()
                 true
             }
             else -> false
@@ -131,6 +141,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 binding.webView.goBack()
             else -> @Suppress("DEPRECATION") super.onBackPressed()
         }
+    }
+
+    // ── App Language Dialog ───────────────────────────────────────────────────
+
+    private fun showAppLanguageDialog() {
+        val langs = arrayOf(
+            getString(R.string.setting_language_en),
+            getString(R.string.setting_language_ar)
+        )
+        val codes = arrayOf("en", "ar")
+        val current = LocaleManager.getLanguage(this)
+        val idx = codes.indexOf(current).coerceAtLeast(0)
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.setting_language))
+            .setSingleChoiceItems(langs, idx) { dialog, which ->
+                dialog.dismiss()
+                val selected = codes[which]
+                if (selected != current) {
+                    LocaleManager.setLanguage(this, selected)
+                    recreate()
+                }
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
     }
 
     // ── Error handling ────────────────────────────────────────────────────────

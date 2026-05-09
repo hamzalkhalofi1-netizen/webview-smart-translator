@@ -1,9 +1,14 @@
 package com.translator.webview
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 
 class TranslatorApp : Application() {
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(LocaleManager.wrap(base))
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -28,7 +33,6 @@ class TranslatorApp : Application() {
                 cause.stackTrace.take(10).forEach { Log.e(TAG, "║   at $it") }
             }
             Log.e(TAG, "╚══════════════════════════════════════╝")
-
             defaultHandler?.uncaughtException(thread, ex)
         }
     }

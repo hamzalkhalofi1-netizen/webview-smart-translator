@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Top app bar -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
@@ -28,12 +27,10 @@
                 app:title="YomuAI"
                 app:titleTextColor="@color/on_surface"
                 app:subtitleTextColor="@color/on_surface_muted"
-                app:navigationIcon="@drawable/ic_home"
                 app:navigationIconTint="@color/primary" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- WebView + overlay stack -->
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
@@ -63,77 +60,6 @@
                 android:focusable="false" />
 
         </FrameLayout>
-
-        <!-- Permission banner -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/permissionBanner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="172dp"
-            android:visibility="gone"
-            app:cardBackgroundColor="@color/surface"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            app:strokeColor="@color/overlay_border"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
-
-                    <ImageView
-                        android:layout_width="26dp"
-                        android:layout_height="26dp"
-                        android:src="@drawable/ic_translate"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="12dp"
-                        android:contentDescription="@null" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/perm_overlay_title"
-                        android:textColor="@color/on_surface"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/perm_banner_description"
-                    android:textColor="@color/on_surface_muted"
-                    android:textSize="12sp"
-                    android:lineSpacingMultiplier="1.4"
-                    android:layout_marginBottom="14dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnGrantPermission"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_open_settings"
-                    android:textColor="@color/on_primary"
-                    app:backgroundTint="@color/primary"
-                    app:cornerRadius="12dp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
 
         <!-- Language settings button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -177,18 +103,30 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- ── Navigation Drawer ─────────────────────────────────────────────── -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navView"
-        android:layout_width="280dp"
+    <!-- ── Floating Navigation Drawer ────────────────────────────────────── -->
+    <!--  FrameLayout wrapper gives top/bottom/end padding so the
+          NavigationView appears as a floating rounded card               -->
+    <FrameLayout
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@drawable/bg_drawer"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/nav_menu"
-        app:itemTextColor="@color/on_surface"
-        app:itemIconTint="@color/primary"
-        app:itemBackground="@null" />
+        android:background="@android:color/transparent"
+        android:paddingTop="32dp"
+        android:paddingBottom="32dp"
+        android:paddingEnd="12dp">
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_drawer_floating"
+            android:elevation="16dp"
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/nav_menu"
+            app:itemTextColor="@color/on_surface"
+            app:itemIconTint="@color/primary"
+            app:itemBackground="@null" />
+
+    </FrameLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

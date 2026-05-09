@@ -34,7 +34,56 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- URL Input Card -->
+            <!-- ── Domain Importer Card ───────────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDomainImporter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/overlay_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/domain_saved_title"
+                        android:textColor="@color/on_surface_muted"
+                        android:textSize="11sp"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="8dp" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipGroupDomains"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true" />
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── URL Input Card ─────────────────────────────────────────── -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,6 +129,47 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Domain quick-add row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxStrokeColor="@color/primary"
+                            app:hintTextColor="@color/on_surface_muted">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etDomain"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_domain"
+                                android:inputType="textUri"
+                                android:textColor="@color/on_surface"
+                                android:textColorHint="@color/on_surface_muted"
+                                android:textSize="13sp"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddDomain"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/btn_add_domain"
+                            android:textColor="@color/on_primary"
+                            app:backgroundTint="@color/secondary_dark"
+                            app:cornerRadius="10dp" />
+
+                    </LinearLayout>
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnFetchSite"
                         android:layout_width="match_parent"
@@ -96,7 +186,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Status / Progress -->
+            <!-- ── Progress ───────────────────────────────────────────────── -->
             <LinearLayout
                 android:id="@+id/layoutProgress"
                 android:layout_width="match_parent"
@@ -134,7 +224,7 @@
 
             </LinearLayout>
 
-            <!-- Gemini AI Badge -->
+            <!-- ── Gemini AI Badge ─────────────────────────────────────────── -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardGeminiBadge"
                 android:layout_width="wrap_content"
@@ -160,7 +250,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Metadata Result Card -->
+            <!-- ── Metadata Result ─────────────────────────────────────────── -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardMetadata"
                 android:layout_width="match_parent"
@@ -188,7 +278,6 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="12dp" />
 
-                    <!-- Title -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -207,7 +296,6 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="10dp" />
 
-                    <!-- Genre -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -225,7 +313,6 @@
                         android:textSize="14sp"
                         android:layout_marginBottom="10dp" />
 
-                    <!-- Description -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -246,7 +333,6 @@
                         android:maxLines="5"
                         android:ellipsize="end" />
 
-                    <!-- Chapter count -->
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipChapterCount"
                         android:layout_width="wrap_content"
@@ -261,7 +347,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Action buttons -->
+            <!-- ── Action Buttons ──────────────────────────────────────────── -->
             <LinearLayout
                 android:id="@+id/layoutActions"
                 android:layout_width="match_parent"
@@ -294,7 +380,7 @@
 
             </LinearLayout>
 
-            <!-- Chapters list -->
+            <!-- ── Chapters List ───────────────────────────────────────────── -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvChapters"
                 android:layout_width="match_parent"
