@@ -1,67 +1,135 @@
-# WebView Smart Translator — Native Android (Kotlin + ML Kit)
+# YomuAI — AI-Powered Manga & Novel Reader (Android / Kotlin)
 
 ## Project Overview
 
-This is a native Android application written in Kotlin. It opens a full WebView (Google) with a floating translation overlay that works entirely inside an Activity — no system-level permissions required.
+**YomuAI** is a native Android application written in Kotlin that combines a full-featured WebView browser, an ML Kit translation overlay, a Manga/Novel downloader with real-time progress, Google Gemini AI context-aware translation, and a smart reader — all with a premium dark theme and a modern rounded Navigation Drawer.
 
-### Features
-- Full WebView browser (Google.com) with JavaScript and DomStorage enabled
-- Screen capture via `PixelCopy` (API 26+) or `WebView.draw()` as fallback
-- On-device OCR via ML Kit Text Recognition (works offline after install)
-- On-device translation (EN→AR and 8 other languages) via ML Kit Translation
-- Draggable, resizable floating overlay inside the Activity
-- Refresh button to re-capture and re-translate the page
+---
 
-### Tech Stack
-- **Language**: Kotlin 1.9.22
-- **Build System**: Gradle 8.4 (wrapper included)
-- **Min SDK**: API 26 (Android 8.0 Oreo)
-- **Target SDK**: API 34 (Android 14)
-- **JDK**: 17
-- **Libraries**: ML Kit Text Recognition, ML Kit Translate, AndroidX WebKit, Material, Coroutines
+## Phase Status
 
-### Project Structure
+| Phase | Status | Features |
+|-------|--------|----------|
+| Phase 1 | ✅ Complete | WebView browser, ML Kit OCR + translation, floating overlay, dark theme |
+| Phase 2 | ✅ Complete | Gemini AI, Manga/Novel downloader, Smart Reader, Navigation Drawer, About screen |
+
+---
+
+## Tech Stack
+
+| Tool | Version |
+|------|---------|
+| Language | Kotlin 1.9.22 |
+| Build | Gradle 8.4 |
+| Min SDK | API 26 (Android 8.0) |
+| Target SDK | API 34 (Android 14) |
+| JDK | 17 |
+| AI | Google Gemini 1.5 Flash |
+| Scraping | OkHttp 4.12 + Jsoup 1.17 |
+| On-device AI | ML Kit Text Recognition + Translate |
+
+---
+
+## Project Structure
+
 ```
 app/src/main/
 ├── java/com/translator/webview/
-│   ├── MainActivity.kt        ← Main screen: WebView + FAB + frame capture
-│   ├── OverlayView.kt         ← Custom floating view: draw + drag + resize
-│   ├── TranslationManager.kt ← ML Kit OCR + Translation wrapper
-│   ├── TranslationService.kt ← Background translation service
-│   ├── NotificationHelper.kt ← Notification support
-│   └── TranslatorApp.kt      ← Application class
+│   ├── MainActivity.kt         ← Main screen: WebView + Navigation Drawer
+│   ├── DownloaderActivity.kt   ← Manga/Novel downloader with real-time progress
+│   ├── ReaderActivity.kt       ← Smart reader (manga pages + novel text)
+│   ├── AboutActivity.kt        ← About screen with links
+│   ├── GeminiTranslator.kt     ← Gemini 1.5 Flash REST API integration
+│   ├── ScrapingEngine.kt       ← Generic HTML scraper (OkHttp + Jsoup)
+│   ├── OverlayView.kt          ← Custom floating translation overlay
+│   ├── TranslationManager.kt   ← ML Kit OCR + Translation wrapper
+│   ├── TranslationService.kt   ← Background foreground service
+│   ├── NotificationHelper.kt   ← Notification channel builder
+│   └── TranslatorApp.kt        ← Application class + crash handler
 ├── res/
-│   ├── layout/activity_main.xml
-│   ├── layout/view_translate_bubble.xml
-│   ├── values/strings.xml
-│   ├── values/colors.xml
-│   ├── values/themes.xml
-│   ├── values/attrs.xml
-│   └── drawable/
+│   ├── layout/
+│   │   ├── activity_main.xml        ← DrawerLayout + WebView
+│   │   ├── activity_downloader.xml  ← Downloader UI with progress
+│   │   ├── activity_reader.xml      ← Smart reader with nav FABs
+│   │   ├── activity_about.xml       ← About screen
+│   │   ├── nav_header_main.xml      ← Drawer header (logo + title)
+│   │   ├── item_chapter.xml         ← Chapter list row
+│   │   └── view_translate_bubble.xml
+│   ├── menu/nav_menu.xml            ← Drawer navigation menu
+│   ├── drawable/                    ← Icons + rounded drawer background
+│   ├── values/strings.xml           ← All strings (English)
+│   ├── values/themes.xml            ← Theme.YomuAI (Material3 DayNight)
+│   ├── values/colors.xml            ← Dark blue premium palette
+│   └── xml/network_security_config.xml
 └── AndroidManifest.xml
 ```
 
-## Running This Project
+---
 
-This is a **native Android app** — it cannot run as a web server and has no browser preview. To build and run it:
+## Building the APK
 
-1. Open the project in **Android Studio** (Hedgehog 2023.1.1 or newer)
-2. Wait for Gradle sync to complete
-3. Connect an Android device (USB debugging enabled) or start an emulator
-4. Press **Run ▶** or `Shift+F10`
+### Option 1: GitHub Actions (Automated CI)
+Push to GitHub → Actions tab runs automatically → Download `YomuAI-debug.apk` from the Artifacts section.
 
-**Build APK:**
+**Add your Gemini API key as a GitHub Secret:**
+- Repository → Settings → Secrets → `GEMINI_API_KEY`
+
+### Option 2: Android Studio (Local)
+1. Open in Android Studio Hedgehog 2023.1.1+
+2. Gradle sync completes automatically
+3. `Build → Build APK(s)` or press **▶**
+4. APK: `app/build/outputs/apk/debug/app-debug.apk`
+
+---
+
+## Gemini API Key
+
+Stored securely in `local.properties` (git-ignored):
 ```
-Build → Build Bundle(s) / APK(s) → Build APK(s)
+GEMINI_API_KEY=AIzaSy...
 ```
-Output: `app/build/outputs/apk/debug/app-debug.apk`
+Injected at build time via `BuildConfig.GEMINI_API_KEY`.
 
-## Customization
+---
 
-- **Change translation language**: Edit `TranslationManager.kt` → `targetLanguageCode`
-- **Change start URL**: Edit `MainActivity.kt` → `loadUrl("https://www.google.com")`
-- **Change overlay colors**: Edit `res/values/colors.xml`
+## Phase 2 Feature Details
+
+### Navigation Drawer
+- Rounded right-edge drawer (`bg_drawer.xml` with `topRightRadius=32dp`)
+- Header with YomuAI logo, title, subtitle
+- Menu: Home Browser · Manga/Novel Downloader · Reader · About
+
+### Manga/Novel Downloader (`DownloaderActivity`)
+- Input any manga/novel site URL
+- Generic HTML scraper extracts: title, genre, description, cover, chapter list
+- Real-time progress bar 0→100% during fetch and download
+- Gemini AI translates all metadata (title, genre, description) in one batched call
+- Per-chapter download with Gemini AI content translation for novels
+- Chapters shown in RecyclerView with ✓ indicator when downloaded
+- Tap any chapter to open it immediately in the Reader
+
+### Gemini AI Integration (`GeminiTranslator`)
+- Uses Gemini 1.5 Flash REST API over OkHttp
+- `translateMetadata()` — batched JSON call for title/genre/description
+- `translateText()` — single field with custom context prompt
+- `translateChapterContent()` — chunks long text and translates paragraph-by-paragraph
+- Temperature: 0.2 (accurate), response format: JSON for metadata
+
+### Smart Reader (`ReaderActivity`)
+- Manga mode: renders image pages in a full-width vertical scroll HTML view
+- Novel mode: renders translated text with serif font, dark background, 1.9 line height
+- Prev/Next chapter FABs
+- Lazy image loading with error handling
+
+### About Screen (`AboutActivity`)
+- YomuAI vector logo
+- Version 2.0 badge
+- "Powered by Google Gemini AI" chip
+- Tappable links: Email · YouTube · Twitter/X · Discord
+
+---
 
 ## User Preferences
-
 - Maintain existing Kotlin/Android project structure
+- Package: `com.translator.webview` (unchanged for APK signing continuity)
+- App name: **YomuAI** everywhere

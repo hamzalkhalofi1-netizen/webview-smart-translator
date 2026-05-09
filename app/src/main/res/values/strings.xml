@@ -1,53 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WebView Translator</string>
+    <string name="app_name">YomuAI</string>
+
+    <!-- Navigation Drawer -->
+    <string name="nav_header_title">YomuAI</string>
+    <string name="nav_header_subtitle">Manga &amp; Novel AI Reader</string>
+    <string name="nav_open">Open navigation drawer</string>
+    <string name="nav_close">Close navigation drawer</string>
+    <string name="menu_home">Home Browser</string>
+    <string name="menu_downloader">Manga / Novel Downloader</string>
+    <string name="menu_reader">Reader</string>
+    <string name="menu_about">About YomuAI</string>
 
     <!-- FAB labels -->
-    <string name="fab_translate">ترجمة</string>
-    <string name="fab_close">إغلاق المترجم</string>
-    <string name="btn_start_translator">تشغيل المترجم</string>
+    <string name="fab_translate">Translate</string>
+    <string name="fab_close">Close Translator</string>
+    <string name="btn_start_translator">Start Translator</string>
 
     <!-- Overlay content -->
-    <string name="overlay_title">طبقة الترجمة</string>
-    <string name="sync_button">⟳ تحديث</string>
-    <string name="translating">جارٍ الترجمة…</string>
-    <string name="no_text_found">لم يُعثر على نص قابل للترجمة</string>
-    <string name="capture_failed">فشل التقاط الشاشة</string>
-    <string name="model_downloading">جارٍ تحميل نموذج الترجمة…</string>
+    <string name="overlay_title">Translation Layer</string>
+    <string name="sync_button">⟳ Refresh</string>
+    <string name="translating">Translating…</string>
+    <string name="no_text_found">No translatable text found</string>
+    <string name="capture_failed">Screen capture failed</string>
+    <string name="model_downloading">Downloading translation model…</string>
 
     <!-- Language picker -->
-    <string name="language_picker_title">اختر لغة الترجمة</string>
-    <string name="language_changed_to">تم التبديل إلى</string>
-    <string name="cancel">إلغاء</string>
-    <string name="btn_language_settings">🌐 اللغة</string>
+    <string name="language_picker_title">Select Translation Language</string>
+    <string name="language_changed_to">Switched to</string>
+    <string name="cancel">Cancel</string>
+    <string name="btn_language_settings">🌐 Language</string>
 
     <!-- Permission dialog -->
-    <string name="overlay_permission_title">إذن مطلوب: العرض فوق التطبيقات</string>
-    <string name="overlay_permission_message">يحتاج المترجم الذكي إلى إذن «العرض فوق التطبيقات» لعرض طبقة الترجمة أثناء تصفحك.\n\nاضغط «فتح الإعدادات»، ابحث عن WebView Translator، ثم فعّل المفتاح.</string>
-    <string name="overlay_permission_go_to_settings">فتح الإعدادات</string>
-    <string name="overlay_permission_skip">تخطّي</string>
-    <string name="overlay_permission_denied_warning">لم يُمنح الإذن — لن تعمل الطبقة العائمة.</string>
+    <string name="overlay_permission_title">Permission Required: Display Over Apps</string>
+    <string name="overlay_permission_message">YomuAI needs the \"Display Over Apps\" permission to show the translation overlay while browsing.\n\nTap \"Open Settings\", find YomuAI, then enable the toggle.</string>
+    <string name="overlay_permission_go_to_settings">Open Settings</string>
+    <string name="overlay_permission_skip">Skip</string>
+    <string name="overlay_permission_denied_warning">Permission not granted — the floating overlay won\'t work.</string>
 
-    <!-- Permission banner (layout) -->
-    <string name="perm_overlay_title">إذن مطلوب: العرض فوق التطبيقات</string>
-    <string name="perm_overlay_message">يحتاج المترجم الذكي إلى إذن «العرض فوق التطبيقات».</string>
-    <string name="perm_banner_description">لعرض طبقة الترجمة، يلزم منح إذن «العرض فوق التطبيقات» من إعدادات الهاتف.</string>
-    <string name="btn_open_settings">فتح الإعدادات لمنح الإذن</string>
-    <string name="btn_skip">تخطي الآن</string>
-    <string name="perm_granted">✓ تم منح الإذن — يمكنك الآن تشغيل المترجم</string>
-    <string name="perm_skipped_hint">يمكنك منح الإذن لاحقاً من خلال الضغط على زر تشغيل المترجم</string>
+    <!-- Permission banner -->
+    <string name="perm_overlay_title">Permission Required: Display Over Apps</string>
+    <string name="perm_overlay_message">YomuAI needs the \"Display Over Apps\" permission.</string>
+    <string name="perm_banner_description">To show the translation overlay, grant the \"Display Over Apps\" permission in your phone settings.</string>
+    <string name="btn_open_settings">Open Settings to Grant Permission</string>
+    <string name="btn_skip">Skip for Now</string>
+    <string name="perm_granted">✓ Permission granted — you can now start the translator</string>
+    <string name="perm_skipped_hint">You can grant permission later by tapping the Start Translator button</string>
 
     <!-- Floating bubble -->
-    <string name="bubble_description">زر الترجمة العائم</string>
+    <string name="bubble_description">Floating translation button</string>
 
     <!-- Foreground service notification -->
-    <string name="notif_channel_name">خدمة الترجمة</string>
-    <string name="notif_channel_description">الإشعار الدائم لخدمة الترجمة العائمة</string>
-    <string name="notif_title">WebView Translator يعمل</string>
-    <string name="notif_text">اضغط على الفقاعة العائمة لبدء الترجمة</string>
-    <string name="notif_action_stop">إيقاف الخدمة</string>
+    <string name="notif_channel_name">YomuAI Translation Service</string>
+    <string name="notif_channel_description">Persistent notification for YomuAI translation overlay service</string>
+    <string name="notif_title">YomuAI is running</string>
+    <string name="notif_text">Tap the floating bubble to start translating</string>
+    <string name="notif_action_stop">Stop Service</string>
 
     <!-- Service control -->
-    <string name="btn_start_service">تشغيل الخدمة العائمة</string>
-    <string name="btn_stop_service">إيقاف الخدمة العائمة</string>
+    <string name="btn_start_service">Start Floating Service</string>
+    <string name="btn_stop_service">Stop Floating Service</string>
+
+    <!-- Downloader -->
+    <string name="downloader_title">Manga / Novel Downloader</string>
+    <string name="hint_site_url">Enter site URL (e.g. https://mangasite.com/manga/title)</string>
+    <string name="btn_fetch_site">Fetch Site</string>
+    <string name="btn_download_all">Download All Chapters</string>
+    <string name="btn_open_reader">Open in Reader</string>
+    <string name="fetching_metadata">Fetching site metadata…</string>
+    <string name="translating_metadata">Translating metadata with Gemini AI…</string>
+    <string name="downloading_chapters">Downloading chapters…</string>
+    <string name="download_complete">Download complete!</string>
+    <string name="no_chapters_found">No chapters found on this site</string>
+    <string name="invalid_url">Please enter a valid URL starting with https://</string>
+    <string name="label_title">Title</string>
+    <string name="label_genre">Genre</string>
+    <string name="label_description">Description</string>
+    <string name="label_chapters">Chapters found</string>
+    <string name="chapter_progress">Chapter %1$d of %2$d</string>
+    <string name="gemini_translating">Gemini AI translating…</string>
+    <string name="ai_translated_badge">✦ AI Translated</string>
+
+    <!-- Reader -->
+    <string name="reader_title">Reader</string>
+    <string name="no_content">No content to display</string>
+    <string name="loading_chapter">Loading chapter…</string>
+
+    <!-- About -->
+    <string name="about_title">About YomuAI</string>
+    <string name="about_version">Version 2.0</string>
+    <string name="about_tagline">AI-powered Manga &amp; Novel Reader</string>
+    <string name="about_description">YomuAI brings intelligent, context-aware translation to your favourite manga and novel reading experience — powered by Google Gemini AI and ML Kit.</string>
+    <string name="about_contact">Contact &amp; Support</string>
+    <string name="about_email">yomuai.app@gmail.com</string>
+    <string name="about_youtube">YouTube Channel</string>
+    <string name="about_twitter">Twitter / X</string>
+    <string name="about_discord">Discord Community</string>
+    <string name="about_github">GitHub</string>
+    <string name="about_copyright">© 2024 YomuAI. All rights reserved.</string>
+    <string name="open_link">Open link</string>
 </resources>

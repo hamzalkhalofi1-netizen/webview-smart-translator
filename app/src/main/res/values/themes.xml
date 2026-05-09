@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
-        Baseline Material3 theme. Only colorPrimary is set explicitly.
-        All other attributes use Material3 defaults to avoid missing-attribute crashes.
-    -->
-    <style name="Theme.WebViewTranslator" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.YomuAI" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/primary</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+    </style>
+
+    <!-- Toolbar style for YomuAI -->
+    <style name="YomuAI.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/surface</item>
+        <item name="titleTextColor">@color/on_surface</item>
+        <item name="subtitleTextColor">@color/on_surface_muted</item>
+    </style>
+
+    <!-- Rounded NavigationView drawer -->
+    <style name="YomuAI.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="android:background">@drawable/bg_drawer</item>
+        <item name="itemTextColor">@color/on_surface</item>
+        <item name="itemIconTint">@color/primary</item>
     </style>
 </resources>

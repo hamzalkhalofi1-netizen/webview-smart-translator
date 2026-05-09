@@ -1,12 +1,15 @@
-name: Build Debug APK
+name: Build YomuAI Debug APK
 
 on:
   push:
+    branches: [ main, master ]
+  pull_request:
     branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
   build:
+    name: Build YomuAI APK
     runs-on: ubuntu-latest
 
     steps:
@@ -29,22 +32,33 @@ jobs:
       - name: Grant Gradle wrapper execute permission
         run: chmod +x gradlew
 
-      - name: Build Debug APK
+      - name: Inject Gemini API key into local.properties
+        run: |
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> local.properties
+
+      - name: Build YomuAI Debug APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace
         env:
           JAVA_HOME: ${{ env.JAVA_HOME }}
 
-      - name: Upload Debug APK
+      - name: Rename APK to YomuAI
+        run: |
+          mkdir -p release
+          cp app/build/outputs/apk/debug/app-debug.apk release/YomuAI-debug.apk
+
+      - name: Upload YomuAI Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: WebViewTranslator-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 14
+          name: YomuAI-debug-apk
+          path: release/YomuAI-debug.apk
+          retention-days: 30
 
-      - name: Show APK info
+      - name: Show build summary
         run: |
           echo "========================================"
-          echo "✅  APK built successfully!"
-          ls -lh app/build/outputs/apk/debug/app-debug.apk
+          echo "✅  YomuAI APK built successfully!"
           echo "========================================"
-          echo "Download: Actions tab → run → Artifacts"
+          ls -lh release/YomuAI-debug.apk
+          echo ""
+          echo "📦 Download: Actions tab → this run → Artifacts → YomuAI-debug-apk"
+          echo "========================================"

@@ -15,6 +15,7 @@ import android.os.IBinder
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.view.MenuItem
 import android.view.PixelCopy
 import android.view.View
 import android.webkit.WebChromeClient
@@ -22,14 +23,17 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import com.google.android.material.navigation.NavigationView
 import com.translator.webview.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
     private var overlayView: OverlayView? = null
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "MainActivity"
+        private const val TAG = "YomuAI"
         private const val REQUEST_OVERLAY_PERMISSION = 1001
     }
 
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             binding = ActivityMainBinding.inflate(layoutInflater)
             setContentView(binding.root)
             NotificationHelper.createChannel(this)
+            setupToolbarAndDrawer()
             checkOverlayPermissionThenInit()
         } catch (e: Exception) {
             Log.e(TAG, "FATAL onCreate", e)
@@ -76,12 +81,66 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // ── Toolbar + Drawer ──────────────────────────────────────────────────────
+
+    private fun setupToolbarAndDrawer() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = "YomuAI"
+
+        val toggle = ActionBarDrawerToggle(
+            this, binding.drawerLayout, binding.toolbar,
+            R.string.nav_open, R.string.nav_close
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        toggle.drawerArrowDrawable.color = getColor(R.color.primary)
+
+        binding.navView.setNavigationItemSelectedListener(this)
+        binding.navView.setCheckedItem(R.id.nav_home)
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return when (item.itemId) {
+            R.id.nav_home -> {
+                // Already home — do nothing
+                true
+            }
+            R.id.nav_downloader -> {
+                startActivity(Intent(this, DownloaderActivity::class.java))
+                true
+            }
+            R.id.nav_reader -> {
+                startActivity(Intent(this, ReaderActivity::class.java))
+                true
+            }
+            R.id.nav_about -> {
+                startActivity(Intent(this, AboutActivity::class.java))
+                true
+            }
+            else -> false
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        when {
+            binding.drawerLayout.isDrawerOpen(GravityCompat.START) ->
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+            binding.webView.canGoBack() ->
+                binding.webView.goBack()
+            else -> @Suppress("DEPRECATION") super.onBackPressed()
+        }
+    }
+
+    // ── Error handling ────────────────────────────────────────────────────────
+
     private fun showFatalError(e: Exception) {
         try {
             AlertDialog.Builder(this)
-                .setTitle("خطأ في التشغيل")
-                .setMessage("${e.javaClass.simpleName}: ${e.message}\n\nيرجى إبلاغ المطور.")
-                .setPositiveButton("حسناً", null)
+                .setTitle("YomuAI — Startup Error")
+                .setMessage("${e.javaClass.simpleName}: ${e.message}\n\nPlease contact support.")
+                .setPositiveButton("OK", null)
                 .show()
         } catch (_: Exception) {
             Toast.makeText(this, "Fatal: ${e.message}", Toast.LENGTH_LONG).show()
@@ -177,7 +236,8 @@ class MainActivity : AppCompatActivity() {
                 setSupportZoom(true)
                 cacheMode = WebSettings.LOAD_DEFAULT
                 mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
-                userAgentString = "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
+                userAgentString = "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 " +
+                    "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
             }
             webViewClient = object : WebViewClient() {
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -222,7 +282,7 @@ class MainActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 toggleOverlay()
-            } catch (e: Exception) { Toast.makeText(this, "خطأ: ${e.message}", Toast.LENGTH_SHORT).show() }
+            } catch (e: Exception) { Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show() }
         }
     }
 
@@ -235,15 +295,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // ── Language settings ─────────────────────────────────────────────────────
+    // ── Language ──────────────────────────────────────────────────────────────
 
     private fun setupLanguageButton() {
-        // The language button is inside the OverlayView header.
-        // The activity also has a standalone settings button (btnLanguage)
-        // that shows a dialog for language selection before the overlay is open.
         try {
             binding.btnLanguage.setOnClickListener { showLanguageDialog() }
-        } catch (e: Exception) { Log.w(TAG, "btnLanguage not found in layout", e) }
+        } catch (e: Exception) { Log.w(TAG, "btnLanguage not found", e) }
     }
 
     fun showLanguageDialog() {
@@ -271,13 +328,13 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    // ── Service button ────────────────────────────────────────────────────────
+    // ── Service ───────────────────────────────────────────────────────────────
 
     private fun setupServiceButton() {
         try {
             binding.btnService.setOnClickListener {
                 try { if (isServiceBound) stopTranslationService() else startTranslationService() }
-                catch (e: Exception) { Toast.makeText(this, "خطأ في الخدمة: ${e.message}", Toast.LENGTH_SHORT).show() }
+                catch (e: Exception) { Toast.makeText(this, "Service error: ${e.message}", Toast.LENGTH_SHORT).show() }
             }
             updateServiceButton()
         } catch (e: Exception) { Log.w(TAG, "btnService not in layout", e) }
@@ -376,12 +433,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         try { if (isServiceBound) { unbindService(serviceConnection); isServiceBound = false } } catch (_: Exception) {}
-    }
-
-    @Suppress("OVERRIDE_DEPRECATION")
-    override fun onBackPressed() {
-        if (binding.webView.canGoBack()) binding.webView.goBack()
-        else @Suppress("DEPRECATION") super.onBackPressed()
     }
 
     override fun onDestroy() {

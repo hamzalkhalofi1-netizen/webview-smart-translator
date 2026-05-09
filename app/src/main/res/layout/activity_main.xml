@@ -1,149 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <FrameLayout
-        android:id="@+id/container"
+    <!-- ── Main content ─────────────────────────────────────────────────── -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_gravity="top"
-            android:max="100"
-            android:progressTint="@color/primary"
-            android:visibility="gone" />
-
-        <FrameLayout
-            android:id="@+id/overlayContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            android:focusable="false" />
-
-    </FrameLayout>
-
-    <!-- Permission banner -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/permissionBanner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="172dp"
-        android:visibility="gone"
-        app:cardBackgroundColor="@color/surface"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:strokeColor="@color/overlay_border"
-        app:strokeWidth="1dp">
-
-        <LinearLayout
+        <!-- Top app bar -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:background="@color/surface"
+            app:elevation="4dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/surface"
+                app:title="YomuAI"
+                app:titleTextColor="@color/on_surface"
+                app:subtitleTextColor="@color/on_surface_muted"
+                app:navigationIcon="@drawable/ic_home"
+                app:navigationIconTint="@color/primary" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- WebView + overlay stack -->
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_gravity="top"
+                android:max="100"
+                android:progressTint="@color/primary"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/overlayContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </FrameLayout>
+
+        <!-- Permission banner -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/permissionBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="172dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/surface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:strokeColor="@color/overlay_border"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
+                android:orientation="vertical"
+                android:padding="20dp">
 
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:src="@drawable/ic_translate"
-                    android:tint="@color/primary"
-                    android:layout_marginEnd="12dp"
-                    android:contentDescription="@null" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:src="@drawable/ic_translate"
+                        android:tint="@color/primary"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/perm_overlay_title"
+                        android:textColor="@color/on_surface"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/perm_overlay_title"
-                    android:textColor="@color/on_surface"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:text="@string/perm_banner_description"
+                    android:textColor="@color/on_surface_muted"
+                    android:textSize="12sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:layout_marginBottom="14dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGrantPermission"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_open_settings"
+                    android:textColor="@color/on_primary"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="12dp" />
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perm_banner_description"
-                android:textColor="@color/on_surface_muted"
-                android:textSize="12sp"
-                android:lineSpacingMultiplier="1.4"
-                android:layout_marginBottom="14dp" />
+        </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGrantPermission"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_open_settings"
-                android:textColor="@color/on_primary"
-                app:backgroundTint="@color/primary"
-                app:cornerRadius="12dp" />
+        <!-- Language settings button -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:text="@string/btn_language_settings"
+            android:textColor="@color/on_primary"
+            app:backgroundTint="@color/surface_variant"
+            app:elevation="10dp" />
 
-        </LinearLayout>
+        <!-- Service toggle -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="24dp"
+            android:text="@string/btn_start_service"
+            android:textColor="@color/on_primary"
+            app:backgroundTint="@color/secondary_dark"
+            app:icon="@drawable/ic_translate"
+            app:iconTint="@color/on_primary"
+            app:elevation="10dp" />
 
-    </com.google.android.material.card.MaterialCardView>
+        <!-- Translate FAB -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fabTranslate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="24dp"
+            android:text="@string/btn_start_translator"
+            android:textColor="@color/on_primary"
+            app:backgroundTint="@color/primary"
+            app:icon="@drawable/ic_translate"
+            app:iconTint="@color/on_primary"
+            app:elevation="10dp" />
 
-    <!-- Language settings button (bottom-center) -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btnLanguage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="24dp"
-        android:text="@string/btn_language_settings"
-        android:textColor="@color/on_primary"
-        app:backgroundTint="@color/surface_variant"
-        app:elevation="10dp" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- Service toggle (bottom-start) -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btnService"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="24dp"
-        android:text="@string/btn_start_service"
-        android:textColor="@color/on_primary"
-        app:backgroundTint="@color/secondary_dark"
-        app:icon="@drawable/ic_translate"
-        app:iconTint="@color/on_primary"
-        app:elevation="10dp" />
+    <!-- ── Navigation Drawer ─────────────────────────────────────────────── -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/bg_drawer"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/nav_menu"
+        app:itemTextColor="@color/on_surface"
+        app:itemIconTint="@color/primary"
+        app:itemBackground="@null" />
 
-    <!-- Translate FAB (bottom-end) -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fabTranslate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
-        android:text="@string/btn_start_translator"
-        android:textColor="@color/on_primary"
-        app:backgroundTint="@color/primary"
-        app:icon="@drawable/ic_translate"
-        app:iconTint="@color/on_primary"
-        app:elevation="10dp" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -15,7 +15,7 @@ class TranslatorApp : Application() {
 
         Thread.setDefaultUncaughtExceptionHandler { thread, ex ->
             Log.e(TAG, "╔══════════════════════════════════════╗")
-            Log.e(TAG, "║        UNCAUGHT EXCEPTION            ║")
+            Log.e(TAG, "║         YomuAI — CRASH LOG           ║")
             Log.e(TAG, "╠══════════════════════════════════════╣")
             Log.e(TAG, "║ Thread : ${thread.name}")
             Log.e(TAG, "║ Type   : ${ex.javaClass.simpleName}")
@@ -29,12 +29,11 @@ class TranslatorApp : Application() {
             }
             Log.e(TAG, "╚══════════════════════════════════════╝")
 
-            // Delegate to the default handler so Android can generate a crash report
             defaultHandler?.uncaughtException(thread, ex)
         }
     }
 
     companion object {
-        private const val TAG = "WebViewTranslator"
+        private const val TAG = "YomuAI"
     }
 }
