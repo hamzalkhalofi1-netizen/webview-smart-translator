@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.translator.webview">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,7 +12,7 @@
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
 
         <activity 
-            android:name="com.translator.webview.MangaBrowseActivity" 
+            android:name=".MangaBrowseActivity" 
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,17 +20,9 @@
             </intent-filter>
         </activity>
 
-        <activity 
-            android:name="com.translator.webview.MainActivity" 
-            android:exported="false" />
-
-        <activity 
-            android:name="com.translator.webview.DownloaderActivity" 
-            android:exported="false" />
-
-        <activity 
-            android:name="com.translator.webview.BotCheckActivity" 
-            android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".DownloaderActivity" android:exported="false" />
+        <activity android:name=".BotCheckActivity" android:exported="false" />
 
     </application>
 </manifest>
