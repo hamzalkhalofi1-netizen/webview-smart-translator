@@ -1,0 +1,15 @@
+./app/src/main/java/com/translator/webview/NotificationHelper.kt
+./app/src/main/java/com/translator/webview/OverlayView.kt
+./app/src/main/java/com/translator/webview/TranslationManager.kt
+./app/src/main/java/com/translator/webview/TranslationService.kt
+./app/src/main/java/com/translator/webview/AboutActivity.kt
+./app/src/main/java/com/translator/webview/LocaleManager.kt
+./app/src/main/java/com/translator/webview/OnboardingActivity.kt
+./app/src/main/java/com/translator/webview/SplashActivity.kt
+./app/src/main/java/com/translator/webview/TranslatorApp.kt
+./app/src/main/java/com/translator/webview/ScrapingEngine.kt
+./app/src/main/java/com/translator/webview/GeminiTranslator.kt
+./app/src/main/java/com/translator/webview/MangaBrowseActivity.kt
+./app/src/main/java/com/translator/webview/ReaderActivity.kt
+./app/src/main/java/com/translator/webview/MainActivity.kt
+./app/src/main/java/com/translator/webview/DownloaderActivity.kt
