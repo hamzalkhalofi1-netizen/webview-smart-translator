@@ -43,6 +43,7 @@ class DownloaderActivity : AppCompatActivity() {
         const val EXTRA_CHAPTER_IMAGES  = "extra_chapter_images"
         const val EXTRA_CHAPTER_TITLE   = "extra_chapter_title"
         const val EXTRA_IS_NOVEL        = "extra_is_novel"
+        const val EXTRA_PREFILL_URL     = "extra_prefill_url"
     }
 
     override fun attachBaseContext(base: Context) {
@@ -60,6 +61,13 @@ class DownloaderActivity : AppCompatActivity() {
         setupRecyclerView()
         setupButtons()
         loadSavedDomains()
+
+        // Pre-fill URL if launched from MangaBrowseActivity
+        val prefillUrl = intent.getStringExtra(EXTRA_PREFILL_URL)
+        if (!prefillUrl.isNullOrBlank()) {
+            binding.etSiteUrl.setText(prefillUrl)
+            fetchSite(prefillUrl)
+        }
     }
 
     private fun setupToolbar() {
@@ -149,15 +157,15 @@ class DownloaderActivity : AppCompatActivity() {
                 isClickable = true
                 isFocusable = true
                 chipBackgroundColor = android.content.res.ColorStateList.valueOf(
-                    android.graphics.Color.parseColor("#1A38BDF8")
+                    android.graphics.Color.parseColor("#1CFFFFFF")
                 )
-                setTextColor(android.graphics.Color.parseColor("#E2E8F0"))
+                setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
                 chipStrokeColor = android.content.res.ColorStateList.valueOf(
-                    android.graphics.Color.parseColor("#38BDF8")
+                    android.graphics.Color.parseColor("#444444")
                 )
                 chipStrokeWidth = resources.getDimension(R.dimen.chip_stroke_width)
                 closeIconTint = android.content.res.ColorStateList.valueOf(
-                    android.graphics.Color.parseColor("#94A3B8")
+                    android.graphics.Color.parseColor("#888888")
                 )
 
                 setOnClickListener {
@@ -381,9 +389,9 @@ class DownloaderActivity : AppCompatActivity() {
             val isDownloaded = downloaded.contains(chapter.number)
             holder.ivStatus.setImageResource(R.drawable.ic_download)
             val tint = if (isDownloaded)
-                android.graphics.Color.parseColor("#4CAF50")
+                android.graphics.Color.parseColor("#FFFFFF")
             else
-                android.graphics.Color.parseColor("#38BDF8")
+                android.graphics.Color.parseColor("#666666")
             holder.ivStatus.setColorFilter(tint)
             holder.itemView.setOnClickListener { onClick(chapter) }
         }

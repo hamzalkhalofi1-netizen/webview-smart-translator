@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="countries">
+        <item>الجزائر</item><item>الأرجنتين</item><item>أستراليا</item>
+        <item>البحرين</item><item>البرازيل</item><item>كندا</item>
+        <item>الصين</item><item>مصر</item><item>فرنسا</item>
+        <item>ألمانيا</item><item>الهند</item><item>إندونيسيا</item>
+        <item>العراق</item><item>اليابان</item><item>الأردن</item>
+        <item>الكويت</item><item>لبنان</item><item>ليبيا</item>
+        <item>ماليزيا</item><item>المكسيك</item><item>المغرب</item>
+        <item>هولندا</item><item>نيجيريا</item><item>عُمان</item>
+        <item>باكستان</item><item>فلسطين</item><item>الفلبين</item>
+        <item>قطر</item><item>روسيا</item><item>المملكة العربية السعودية</item>
+        <item>كوريا الجنوبية</item><item>إسبانيا</item><item>السودان</item>
+        <item>سوريا</item><item>تايلاند</item><item>تونس</item>
+        <item>تركيا</item><item>الإمارات العربية المتحدة</item><item>المملكة المتحدة</item>
+        <item>الولايات المتحدة</item><item>اليمن</item><item>أخرى</item>
+    </string-array>
+    <string name="about_contact">التواصل والدعم</string>
+    <string name="about_copyright">© 2025 يوموAI. جميع الحقوق محفوظة.</string>
+    <string name="about_description">يوموAI يجلب لك ترجمة ذكية وسياقية لتجربة قراءة مانغا وروايات مفضلة لديك — مدعوم بـ Google Gemini AI و ML Kit.</string>
+    <string name="about_discord">ديسكورد</string>
+    <string name="about_email">yomuai.app@gmail.com</string>
+    <string name="about_facebook">فيسبوك</string>
+    <string name="about_github">GitHub</string>
+    <string name="about_instagram">إنستغرام</string>
+    <string name="about_tagline">قارئ المانغا والروايات بالذكاء الاصطناعي</string>
+    <string name="about_title">حول يوموAI</string>
+    <string name="about_twitter">تويتر / X</string>
+    <string name="about_version">الإصدار 2.0</string>
+    <string name="about_youtube">يوتيوب</string>
+    <string name="ai_translated_badge">✦ مترجم بالذكاء الاصطناعي</string>
+    <string name="app_name">يوموAI</string>
+    <string name="app_version">الإصدار 2.0</string>
+    <string name="btn_add_domain">إضافة</string>
+    <string name="btn_download_all">تحميل جميع الفصول</string>
+    <string name="btn_fetch_site">جلب الموقع</string>
+    <string name="btn_language_settings">🌐 اللغة</string>
+    <string name="btn_open_reader">فتح في القارئ</string>
+    <string name="btn_open_settings">فتح الإعدادات لمنح الإذن</string>
+    <string name="btn_retry">إعادة المحاولة</string>
+    <string name="btn_skip">تخطي الآن</string>
+    <string name="btn_start_service">بدء الخدمة العائمة</string>
+    <string name="btn_start_translator">بدء المترجم</string>
+    <string name="btn_stop_service">إيقاف الخدمة العائمة</string>
+    <string name="bubble_description">زر الترجمة العائم</string>
+    <string name="cancel">إلغاء</string>
+    <string name="capture_failed">فشل التقاط الشاشة</string>
+    <string name="chapter_progress">الفصل %1$d من %2$d</string>
+    <string name="domain_saved_title">النطاقات المحفوظة</string>
+    <string name="download_complete">اكتمل التحميل!</string>
+    <string name="downloader_title">تحميل المانغا / الروايات</string>
+    <string name="downloading_chapters">جارٍ تحميل الفصول…</string>
+    <string name="fab_close">إغلاق المترجم</string>
+    <string name="fab_translate">ترجمة</string>
+    <string name="fetching_metadata">جارٍ جلب بيانات الموقع…</string>
+    <string name="gemini_translating">Gemini AI يترجم…</string>
+    <string name="hint_domain">النطاق (مثال: mangalek.com)</string>
+    <string name="hint_site_url">الصق رابط صفحة المانغا أو الرواية…</string>
+    <string name="invalid_url">يرجى إدخال رابط صحيح يبدأ بـ https://</string>
+    <string name="label_chapters">الفصول المتاحة</string>
+    <string name="label_description">الوصف</string>
+    <string name="label_genre">النوع</string>
+    <string name="label_title">العنوان</string>
+    <string name="language_changed_to">تم التحويل إلى</string>
+    <string name="language_picker_title">اختر لغة الترجمة</string>
+    <string name="loading_chapter">جارٍ تحميل الفصل…</string>
+    <string name="menu_about">حول يوموAI</string>
+    <string name="menu_downloader">تحميل المانغا / الروايات</string>
+    <string name="menu_home">المتصفح الرئيسي</string>
+    <string name="menu_reader">القارئ</string>
+    <string name="menu_settings">الإعدادات</string>
+    <string name="model_downloading">جارٍ تنزيل نموذج الترجمة…</string>
+    <string name="nav_close">إغلاق قائمة التنقل</string>
+    <string name="nav_header_subtitle">قارئ المانغا والروايات بالذكاء الاصطناعي</string>
+    <string name="nav_header_title">يوموAI</string>
+    <string name="nav_open">فتح قائمة التنقل</string>
+    <string name="no_chapters_found">لم يتم العثور على فصول في هذا الموقع</string>
+    <string name="no_content">لا يوجد محتوى للعرض</string>
+    <string name="no_text_found">لم يتم العثور على نص قابل للترجمة</string>
+    <string name="notif_action_stop">إيقاف الخدمة</string>
+    <string name="notif_channel_description">إشعار دائم لخدمة طبقة الترجمة العائمة</string>
+    <string name="notif_channel_name">خدمة ترجمة يوموAI</string>
+    <string name="notif_text">اضغط على الفقاعة العائمة للبدء في الترجمة</string>
+    <string name="notif_title">يوموAI يعمل</string>
+    <string name="onboard_app_lang_label">لغة التطبيق</string>
+    <string name="onboard_btn_back">السابق</string>
+    <string name="onboard_btn_finish">ابدأ الآن</string>
+    <string name="onboard_btn_next">التالي</string>
+    <string name="onboard_btn_skip">تخطي</string>
+    <string name="onboard_female">أنثى</string>
+    <string name="onboard_intent_comics">كوميكس</string>
+    <string name="onboard_intent_manga">مانغا</string>
+    <string name="onboard_intent_novels">روايات</string>
+    <string name="onboard_intent_translation">ترجمة</string>
+    <string name="onboard_male">ذكر</string>
+    <string name="onboard_step">الخطوة %1$d من %2$d</string>
+    <string name="onboard_step1_sub">أخبرنا قليلاً عن نفسك</string>
+    <string name="onboard_step1_title">من أنت؟</string>
+    <string name="onboard_step2_sub">اختر بلدك</string>
+    <string name="onboard_step2_title">من أين أنت؟</string>
+    <string name="onboard_step3_sub">يساعدنا في اقتراح المحتوى المناسب</string>
+    <string name="onboard_step3_title">كم عمرك؟</string>
+    <string name="onboard_step4_sub">اختر ما يناسبك</string>
+    <string name="onboard_step4_title">ماذا تقرأ؟</string>
+    <string name="onboard_step5_title">تفضيلات اللغة</string>
+    <string name="onboard_translate_lang_label">لغة الترجمة</string>
+    <string name="open_link">فتح الرابط</string>
+    <string name="overlay_permission_denied_warning">لم يُمنح الإذن — لن تعمل الطبقة العائمة.</string>
+    <string name="overlay_permission_go_to_settings">فتح الإعدادات</string>
+    <string name="overlay_permission_message">يحتاج يوموAI إلى إذن \"العرض فوق التطبيقات\" لعرض طبقة الترجمة أثناء التصفح.\n\nاضغط \"فتح الإعدادات\"، ابحث عن يوموAI، ثم فعّل المفتاح.</string>
+    <string name="overlay_permission_skip">تخطي</string>
+    <string name="overlay_permission_title">إذن مطلوب</string>
+    <string name="overlay_title">طبقة الترجمة</string>
+    <string name="perm_banner_description">لإظهار طبقة الترجمة، امنح إذن \"العرض فوق التطبيقات\" في إعدادات الهاتف.</string>
+    <string name="perm_granted">✓ تم منح الإذن — يمكنك الآن بدء المترجم</string>
+    <string name="perm_overlay_message">يوموAI يحتاج إلى إذن \"العرض فوق التطبيقات\".</string>
+    <string name="perm_overlay_title">إذن مطلوب: العرض فوق التطبيقات</string>
+    <string name="perm_skipped_hint">يمكنك منح الإذن لاحقاً بالضغط على زر بدء المترجم</string>
+    <string name="reader_title">القارئ</string>
+    <string name="setting_language">لغة التطبيق</string>
+    <string name="setting_language_ar">العربية</string>
+    <string name="setting_language_en">الإنجليزية</string>
+    <string name="splash_no_internet_msg">يرجى التحقق من اتصال Wi-Fi أو البيانات الجوالة والمحاولة مرة أخرى.</string>
+    <string name="splash_no_internet_title">لا يوجد اتصال بالإنترنت</string>
+    <string name="sync_button">⟳ تحديث</string>
+    <string name="translating">جارٍ الترجمة…</string>
+    <string name="translating_chapter">جارٍ ترجمة الفصل…</string>
+    <string name="translating_metadata">ترجمة البيانات بالذكاء الاصطناعي Gemini…</string>
+</resources>

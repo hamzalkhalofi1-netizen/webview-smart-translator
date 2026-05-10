@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/activity_downloader.xml",
+        "source": "com.translator.webview.app-main-39:/layout/activity_downloader.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/item_manga_grid.xml",
+        "source": "com.translator.webview.app-main-39:/layout/item_manga_grid.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/activity_main.xml",
+        "source": "com.translator.webview.app-main-39:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/view_translate_bubble.xml",
+        "source": "com.translator.webview.app-main-39:/layout/view_translate_bubble.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/nav_header_main.xml",
+        "source": "com.translator.webview.app-main-39:/layout/nav_header_main.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/activity_reader.xml",
+        "source": "com.translator.webview.app-main-39:/layout/activity_reader.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/activity_onboarding.xml",
+        "source": "com.translator.webview.app-main-39:/layout/activity_onboarding.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/item_chapter.xml",
+        "source": "com.translator.webview.app-main-39:/layout/item_chapter.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/activity_about.xml",
+        "source": "com.translator.webview.app-main-39:/layout/activity_about.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/activity_splash.xml",
+        "source": "com.translator.webview.app-main-39:/layout/activity_splash.xml"
+    },
+    {
+        "merged": "com.translator.webview.app-mergeDebugResources-36:/layout/activity_manga_browse.xml",
+        "source": "com.translator.webview.app-main-39:/layout/activity_manga_browse.xml"
+    }
+]

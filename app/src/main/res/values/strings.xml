@@ -116,8 +116,9 @@
 
     <!-- About -->
     <string name="about_title">About YomuAI</string>
-    <string name="app_version">Version 2.0</string>
-    <string name="about_version">Version 2.0</string>
+    <string name="app_version">Version 3.0</string>
+    <string name="about_version">Version 3.0</string>
+    <string name="menu_browse">Browse Manga</string>
     <string name="about_tagline">AI-powered Manga &amp; Novel Reader</string>
     <string name="about_description">YomuAI brings intelligent, context-aware translation to your favourite manga and novel reading experience — powered by Google Gemini AI and ML Kit.</string>
     <string name="about_contact">Contact &amp; Support</string>

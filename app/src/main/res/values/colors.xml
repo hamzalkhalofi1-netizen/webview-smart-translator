@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- ── Primary ──────────────────────────────────────────────────────── -->
-    <color name="primary">#38BDF8</color>
-    <color name="primary_dark">#0369A1</color>
-    <color name="on_primary">#0F172A</color>
+    <!-- ── Monochrome Manga Palette ──────────────────────────────────────── -->
 
-    <!-- ── Secondary (required by MaterialComponents) ───────────────────── -->
-    <color name="secondary">#7DD3FC</color>
-    <color name="secondary_dark">#0284C7</color>
-    <color name="on_secondary">#0C4A6E</color>
+    <!-- Primary = pure white (manga ink on paper feel) -->
+    <color name="primary">#FFFFFF</color>
+    <color name="primary_dark">#CCCCCC</color>
+    <color name="on_primary">#000000</color>
 
-    <!-- ── Backgrounds / Surfaces ───────────────────────────────────────── -->
-    <color name="background">#0F172A</color>
-    <color name="surface">#1E293B</color>
-    <color name="surface_variant">#334155</color>
-    <color name="on_surface">#F0F9FF</color>
-    <color name="on_surface_muted">#94A3B8</color>
+    <!-- Secondary = mid gray -->
+    <color name="secondary">#888888</color>
+    <color name="secondary_dark">#444444</color>
+    <color name="on_secondary">#FFFFFF</color>
 
-    <!-- ── Error (required by MaterialComponents) ───────────────────────── -->
-    <color name="error">#F87171</color>
-    <color name="on_error">#1F0000</color>
+    <!-- Backgrounds — deep black like manga night scenes -->
+    <color name="background">#000000</color>
+    <color name="surface">#111111</color>
+    <color name="surface_variant">#1C1C1C</color>
+    <color name="on_surface">#FFFFFF</color>
+    <color name="on_surface_muted">#888888</color>
 
-    <!-- ── Overlay UI ───────────────────────────────────────────────────── -->
-    <color name="overlay_bg">#E00F172A</color>
-    <color name="overlay_header">#F5141E2E</color>
-    <color name="overlay_border">#B438BDF8</color>
-    <color name="text_mask">#F20A1226</color>
+    <!-- Error -->
+    <color name="error">#FF4444</color>
+    <color name="on_error">#000000</color>
+
+    <!-- Overlay UI -->
+    <color name="overlay_bg">#E0000000</color>
+    <color name="overlay_header">#F0111111</color>
+    <color name="overlay_border">#333333</color>
+    <color name="text_mask">#F0000000</color>
+
+    <!-- Accent strip used for progress / selection highlight -->
+    <color name="accent_strip">#FFFFFF</color>
 
 </resources>

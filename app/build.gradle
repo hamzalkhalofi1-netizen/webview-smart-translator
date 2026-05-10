@@ -17,11 +17,11 @@ android {
         applicationId "com.translator.webview"
         minSdk 26
         targetSdk 34
-        versionCode 3
-        versionName "2.0"
+        versionCode 4
+        versionName "3.0"
 
         buildConfigField "String", "GEMINI_API_KEY", "\"${localProperties.getProperty('GEMINI_API_KEY', '')}\""
-        buildConfigField "String", "APP_VERSION", "\"2.0\""
+        buildConfigField "String", "APP_VERSION", "\"3.0\""
     }
 
     buildTypes {
@@ -66,6 +66,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
 
+    // Coil — fast async image loading for manga covers + chapter pages
+    implementation 'io.coil-kt:coil:2.5.0'
+
     // ML Kit OCR
     implementation 'com.google.mlkit:text-recognition:16.0.0'
 
@@ -81,5 +84,4 @@ dependencies {
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
-
 }

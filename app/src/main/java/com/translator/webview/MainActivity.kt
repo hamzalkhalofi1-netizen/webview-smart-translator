@@ -112,6 +112,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return when (item.itemId) {
             R.id.nav_home -> true
+            R.id.nav_browse -> {
+                startActivity(Intent(this, MangaBrowseActivity::class.java))
+                true
+            }
             R.id.nav_downloader -> {
                 startActivity(Intent(this, DownloaderActivity::class.java))
                 true
